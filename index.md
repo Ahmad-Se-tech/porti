@@ -3,7 +3,6 @@ layout: post
 title: Portfolio Home 
 hide: true
 show_reading_time: false
-permalink: /home
 ---
 
 Hi! My name is Ahmad Sediqi. 
