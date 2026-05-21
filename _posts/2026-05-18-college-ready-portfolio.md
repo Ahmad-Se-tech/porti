@@ -7,12 +7,9 @@ permalink: /college-ready-portfolio
 
 # Final Portfolio
 
-This page maps every required CS 111 learning objective to exact lines from the Escape Game source files. All code excerpts are taken directly from the project.
+This is my final portfolio ik its long ;)
 
 ## CS111 Portfolio Checklist
-
-### Object-Oriented Programming
-
 | Done | Objective | Evidence |
 |------|-----------|----------|
 | ☑ | Writing Classes | `GameLevelForestDeath`, `NpcAiChat`, and 5 other level classes |
@@ -21,9 +18,6 @@ This page maps every required CS 111 learning objective to exact lines from the 
 | ☑ | Inheritance (Basic) | `GameObject → Character → Player / Npc`, plus `Barrier`, `Coin`, `GameEnvBackground` |
 | ☑ | Method Overriding | `interact` and `reaction` overridden on every NPC sprite config |
 | ☑ | Constructor Chaining | `new NpcAiChat(...)` x3 in `GameLevelForestWin`; `new GameControl(..., { parentControl })` |
-
-### CheckList
-
 | Done | Objective | Evidence |
 |------|-----------|----------|
 | ☑ | Iteration | Fisher-Yates `for` loop, `forEach` on container children, `.map()` for door sprites, `for` loop for typing dots |
