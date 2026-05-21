@@ -2,8 +2,7 @@
 layout: post
 codemirror: true
 title: Sprint 6 Final Project
-description: CS111 evidence portfolio covering OOP, control structures, data types, and operators drawn directly from the Escape Game source code.
-permalink: /college-portfolio
+permalink: /college-ready-portfolio
 ---
 
 # Final Portfolio
