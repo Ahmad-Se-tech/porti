@@ -22,16 +22,13 @@ This page maps every required CS 111 learning objective to exact lines from the 
 | ☑ | Method Overriding | `interact` and `reaction` overridden on every NPC sprite config |
 | ☑ | Constructor Chaining | `new NpcAiChat(...)` x3 in `GameLevelForestWin`; `new GameControl(..., { parentControl })` |
 
-### Control Structures
+### CheckList
 
 | Done | Objective | Evidence |
 |------|-----------|----------|
 | ☑ | Iteration | Fisher-Yates `for` loop, `forEach` on container children, `.map()` for door sprites, `for` loop for typing dots |
 | ☑ | Conditionals | NPC interaction guard (`if dialogueSystem && isDialogueOpen`), Exit Warden transition, `NpcAiChat.close()` guard |
 | ☑ | Nested Conditions | 3-level nesting in `GameLevelDoors.js`; empty-input → `try/catch` → reply/error in `NpcAiChat.send()` |
-
-### Data Types
-
 | Done | Objective | Evidence |
 |------|-----------|----------|
 | ☑ | Numbers | `SCALE_FACTOR`, `STEP_FACTOR`, `ANIMATION_RATE`, pixel dimensions, `Math.round(rx * width)` |
@@ -39,17 +36,11 @@ This page maps every required CS 111 learning objective to exact lines from the 
 | ☑ | Booleans | `GRAVITY: false/true`, `isCorrect`, `isOpen()` returning `!!this.container && ...` |
 | ☑ | Arrays | `dialogues[]`, `doorConfigs[]`, `xPositions[]`, `this.history[]`, `this.classes[]` |
 | ☑ | Objects (JSON) | Full sprite config objects (`sprite_data_r2d2`), API request body via `JSON.stringify(...)` |
-
-### Operators
-
 | Done | Objective | Evidence |
 |------|-----------|----------|
 | ☑ | Mathematical | `Math.round(rx * width)`, `Math.floor(Math.random() * n)`, `% taunts.length`, `_tauntIndex++` |
 | ☑ | String Operations | Template literals for CSS (`justify-content:${...}`), error strings (`API ${res.status}`), key lookup with `\|\|` fallback |
 | ☑ | Boolean Expressions | `&&` interaction guard, `\|\|` fallback for `parentControl`, `!` negation, `?.` and `??` in API reply |
-
-### Input / Output
-
 | Done | Objective | Evidence |
 |------|-----------|----------|
 | ☑ | Keyboard Input | Player controlled via engine key event listeners (arrow keys / WASD) |
@@ -58,17 +49,11 @@ This page maps every required CS 111 learning objective to exact lines from the 
 | ☑ | API Integration | `fetch` POST to AI NPC API in `NpcAiChat._ask()` with model and messages |
 | ☑ | Asynchronous I/O | `async _ask()` method; `await fetch(...)` in `NpcAiChat` |
 | ☑ | JSON Parsing | `JSON.stringify(...)` for API body; `data.content.find(b => b.type === 'text')?.text ?? '...'` |
-
-### Documentation
-
 | Done | Objective | Evidence |
 |------|-----------|----------|
 | ☑ | Code Comments | Inline comments throughout all level files explaining logic |
 | ☑ | Mini-Lesson Documentation | Portfolio page with embedded live game runners |
 | ☑ | Code Highlights | Annotated code snippets with explanations for every objective |
-
-### Debugging
-
 | Done | Objective | Evidence |
 |------|-----------|----------|
 | ☑ | Console Debugging | `console.log("Initializing GameLevelForestDeath...")`, `console.error('NPC AI error:', e)`, `console.log` in all code runners |
@@ -77,9 +62,6 @@ This page maps every required CS 111 learning objective to exact lines from the 
 | ☑ | Network Debugging | Used the Network tab to find GameLevelForestSub.js returning a 404 while all other scripts loaded 200 — traced to a mismatched import path |
 | ☑ | Application Debugging | Inspected the DOM to find stale canvas elements left behind after sublevel transitions; fixed with Array.from(gameContainer.children).forEach(...) cleanup |
 | ☑ | Element Inspection | Console showed TypeError: Failed to fetch dynamically imported module from GameExecutor.js:338; traced the blob import failure back to a renamed file with an outdated import string |
-
-### Testing & Verification
-
 | Done | Objective | Evidence |
 |------|-----------|----------|
 | ☑ | Gameplay Testing | Live game runner embeds for every level in the portfolio |
@@ -88,11 +70,11 @@ This page maps every required CS 111 learning objective to exact lines from the 
 
 ---
 
-## Object-Oriented Programming
+## Object-Oriented
 
-### Writing Classes
+### The Writing Classes
 
-The game has **six custom level classes**, all built on top of the GameEngine base classes. An example of this is `GameLevelForestDeath` (extends the engine's level pattern with `Player` and `Npc`).
+Escape the Tower has **six custom level classes**, all built on top of the GameEngine base classes. An example of this is `GameLevelForestDeath` (extends the engine's level pattern with `Player` and `Npc`).
 
 **`GameLevelForestDeath.js`** — constructor receives `gameEnv`, sets up sprite data, and registers a `this.classes` array that the engine reads to instantiate all game objects:
 
