@@ -1,4 +1,3 @@
----
 layout: post
 codemirror: true
 title: Sprint 6 Final Project
@@ -64,11 +63,11 @@ This is my final portfolio ik its long
 
 ---
 
-## The Writing Classes
+## Writing Classes
 
-Escape the Tower has **six custom level classes**, all built on top of the GameEngine base classes. An example of this is `GameLevelForestDeath` (extends the engine's level pattern with `Player` and `Npc`).
+My game, Escape the Tower, is built around **six custom level classes** that sit on top of the GameEngine's base system. Each one is its own file and its own class — `GameLevelForestDeath` is a good example to walk through since it shows the core pattern clearly.
 
-**`GameLevelForestDeath.js`** — constructor receives `gameEnv`, sets up sprite data, and registers a `this.classes` array that the engine reads to instantiate all game objects:
+The constructor takes a `gameEnv` reference, then builds a `this.classes` array that the engine uses to figure out what objects to create when the level loads:
 
 ```javascript
 // GameLevelForestDeath.js
@@ -87,9 +86,9 @@ class GameLevelForestDeath {
 export default GameLevelForestDeath;
 ```
 
-All six level classes (`GameLevelMaze`, `GameLevelMazeSub`, `GameLevelDoors`, `GameLevelForest`, `GameLevelForestSub`, `GameLevelForestDeath`, `GameLevelForestWin`) follow this same pattern, each with their own NPC configurations, sprite data, and transition logic.
+Every one of my seven levels — `GameLevelMaze`, `GameLevelMazeSub`, `GameLevelDoors`, `GameLevelForest`, `GameLevelForestSub`, `GameLevelForestDeath`, and `GameLevelForestWin` — is built this same way. They each have their own NPC setups, sprite configs, and transition logic, but they all share this constructor pattern.
 
-Play the Forest Death level to see `GameLevelForestDeath` instantiated and running:
+You can play the Forest Death level below to see `GameLevelForestDeath` running live:
 
 {% capture challenge_oop_writing %}
 Play the Forest Death level. Use WASD or arrow keys to move. Approach the NPCs to trigger interactions!
@@ -115,7 +114,7 @@ export { GameControl };
 
 ### Methods & Parameters
 
-The `cleanAndTransition` helper in `GameLevelDoors.js` takes 2 parameters:
+Two helpers I wrote show up repeatedly across the level files. `cleanAndTransition` in `GameLevelDoors.js` takes two parameters — the target level class and the game instance — and handles the fade + swap sequence:
 
 ```javascript
 // GameLevelDoors.js
@@ -125,7 +124,7 @@ function cleanAndTransition(targetLevelClass, primaryGame) {
 }
 ```
 
-The `launchSublevel` helper in `GameLevelForestSub.js` takes 1 parameter and handles all game-in-game launching:
+`launchSublevel` in `GameLevelForestSub.js` wraps everything needed to spin up a game-inside-a-game into a single one-parameter call:
 
 ```javascript
 // GameLevelForestSub.js
@@ -135,7 +134,7 @@ function launchSublevel(levelClass) {
 }
 ```
 
-Run the code below to see the method signatures in action with real output:
+Run this to see the actual return values from both functions:
 
 {% capture challenge_oop_methods %}
 Run the code to see the method signatures from the Escape Game printed with real output.
@@ -176,9 +175,7 @@ console.log(launchSublevel('GameLevelForestDeath'));
 
 ### Instantiation & Objects
 
-All game objects are instantiated through the `this.classes` array — a GameEngine pattern where each entry is an Object Literal with a `class` reference and a `data` config. The engine reads this array and calls `new class(data, gameEnv)` for each entry.
-
-**`GameLevelMazeSub.js`** — the most complex level, instantiating `GameEnvBackground`, six `Barrier` platforms, a `Coin`, three `Npc` objects, and the `Player`:
+The GameEngine reads `this.classes` and calls `new class(data, gameEnv)` for each entry automatically — so my job in each level is just to build that array correctly. `GameLevelMazeSub.js` is my most object-heavy level with 12 entries total, including six barrier platforms, a coin, three NPCs, and the player:
 
 ```javascript
 // GameLevelMazeSub.js
@@ -198,7 +195,7 @@ this.classes = [
 ];
 ```
 
-**`GameLevelDoors.js`** takes this further by building door instances dynamically in a loop, then spreading them into `this.classes`:
+`GameLevelDoors.js` takes it further by generating door instances dynamically through `.map()` and spreading them into the classes array at the end:
 
 ```javascript
 // GameLevelDoors.js — dynamic instantiation via .map()
@@ -220,7 +217,7 @@ this.classes = [
 ];
 ```
 
-The code runner below simulates what the engine does internally when it reads `this.classes`:
+This runner simulates what the engine does when it processes `this.classes`:
 
 {% capture challenge_oop_instantiation %}
 Run the code to simulate how the GameEngine reads this.classes and instantiates all 12 objects from GameLevelMazeSub.
@@ -268,7 +265,7 @@ console.log(`\nTotal objects instantiated: ${gameObjects.length}`);
    code=code_oop_instantiation
 %}
 
-Play the Maze level to see all 12 of those objects running live:
+Play the Maze level to see all 12 objects running at once:
 
 {% capture challenge_oop_maze %}
 Play the Maze Sub Level. Climb the staircase platforms to reach the Exit Warden and trigger a level transition!
@@ -294,7 +291,7 @@ export { GameControl };
 
 ### Inheritance (Basic)
 
-The game uses the GameEngine's built-in inheritance hierarchy. Every level instantiates objects from these chains:
+My game plugs into the GameEngine's existing inheritance chain rather than rebuilding it from scratch. The hierarchy looks like this:
 
 ```
 GameObject  (GameEngine base)
@@ -306,9 +303,9 @@ GameObject  (GameEngine base)
   └─ Coin             (used in GameLevelDoors, GameLevelMazeSub, GameLevelForestWin)
 ```
 
-All levels use the `extends` keyword through imported engine classes. `NpcAiChat` in `GameLevelForestWin.js` is a standalone custom class not extending an engine base, showing both patterns side by side in the same file.
+All my level files import and use these engine classes via `extends`. `NpcAiChat` in `GameLevelForestWin.js` is a standalone class that doesn't extend anything from the engine — so that file actually shows both patterns next to each other.
 
-Play the full game to see every class in the hierarchy instantiated and running together:
+Play the full game here to see every class from the hierarchy active at once:
 
 {% capture challenge_oop_inheritance %}
 Play the full Escape Game. Every class in the inheritance hierarchy is running live — Player, Npc, Barrier, Coin, and GameEnvBackground all instantiated from the same engine base.
@@ -339,7 +336,7 @@ export { GameControl };
 
 ### Method Overriding
 
-Every NPC sprite data object defines `react` and `interact` as overrides of the base `Npc` class methods. The `Strange Beckoner` in `GameLevelForestDeath.js` is one of the most complete overrides — `interact` maintains its own `_tauntIndex` state, builds dynamic dialogue, and triggers a level transition:
+Every NPC in the game has its own `interact` function defined directly on its sprite data object, which overrides the default behavior from the base `Npc` class. The Strange Beckoner in `GameLevelForestDeath.js` is the most involved one — it tracks its own `_tauntIndex`, cycles through a list of taunts, and includes a button that sends the player back to a previous level:
 
 ```javascript
 // GameLevelForestDeath.js — sprite_data_beckoner
@@ -376,7 +373,7 @@ interact: function() {
 }
 ```
 
-Run the code below to see the taunt cycling logic from `interact` in isolation:
+Run this to watch the taunt cycle in isolation — it wraps back around after 5 presses:
 
 {% capture challenge_oop_override %}
 Run the code to see the Strange Beckoner's taunt cycle — the same logic from GameLevelForestDeath.js, cycling through taunts and wrapping back around.
@@ -413,7 +410,7 @@ for (let press = 1; press <= 7; press++) {
 
 ### Constructor Chaining
 
-The `NpcAiChat` class demonstrates explicit constructor chaining — three instances are created inside `GameLevelForestWin`'s constructor, each receiving a unique name, system prompt, and avatar:
+`GameLevelForestWin.js` creates three separate `NpcAiChat` instances inside its constructor, each with its own name, system prompt, and avatar image:
 
 ```javascript
 // GameLevelForestWin.js — three NpcAiChat instances chained from parent constructor
@@ -422,7 +419,7 @@ const elderChat    = new NpcAiChat('Village Elder',  PERSONA_ELDER,   "/images/.
 const villagerChat = new NpcAiChat('Villager',       PERSONA_VILLAGER,"/images/.../octocat.png");
 ```
 
-`GameControl` is also chained with a `parentControl` reference so nested game-in-game instances can communicate back to their parent:
+`GameControl` uses a `parentControl` option so a sublevel can hold a reference back to the game that launched it, which is how the nested game-in-game structure communicates:
 
 ```javascript
 // GameLevelForest.js — constructor chaining via GameControl
@@ -435,7 +432,7 @@ gameInGame.gameOver = function() {
 };
 ```
 
-Play the Forest Win level and talk to R2D2, the Village Elder, or the Villager — each one opens a separate `NpcAiChat` instance created from its own constructor chain:
+Play the Forest Win level and talk to any of the three NPCs to see the separate chat instances in action:
 
 {% capture challenge_oop_chaining %}
 Play the Forest Win level. Walk up to R2D2, the Village Elder, or the Villager and interact with them. Each NPC has its own NpcAiChat instance created by constructor chaining!
@@ -462,7 +459,9 @@ export { GameControl };
 
 ### Iteration
 
-**`for` loop** — `GameLevelDoors.js` Fisher-Yates shuffle to randomize door x-positions each run:
+I used four different kinds of loops across the project, each in a spot where it made the most sense.
+
+**`for` loop** — Fisher-Yates shuffle in `GameLevelDoors.js` randomizes which x-position each door gets assigned:
 
 ```javascript
 // GameLevelDoors.js
@@ -473,7 +472,7 @@ for (let i = xPositions.length - 1; i > 0; i--) {
 }
 ```
 
-**`forEach` loop** — clearing game container children during every level transition:
+**`forEach` loop** — used on every level transition to strip old canvas elements out of the container before the new level loads:
 
 ```javascript
 // GameLevelForestDeath.js
@@ -482,7 +481,7 @@ Array.from(gameContainer.children).forEach(child => {
 });
 ```
 
-**`.map()` loop** — `GameLevelDoors.js` builds all 5 door sprite objects from a config array:
+**`.map()` loop** — `GameLevelDoors.js` transforms an array of door configs into a full array of sprite data objects:
 
 ```javascript
 // GameLevelDoors.js
@@ -492,7 +491,7 @@ const doorSprites = doorConfigs.map((cfg, i) => {
 });
 ```
 
-**`for` loop** — `NpcAiChat._typingBubble()` iterates to build the 3 animated typing dots:
+**`for` loop** — `NpcAiChat._typingBubble()` builds 3 animated dots with staggered delays:
 
 ```javascript
 // GameLevelForestWin.js
@@ -503,7 +502,7 @@ for (let i = 0; i < 3; i++) {
 }
 ```
 
-Run the code below to see the shuffle and `.map()` produce a new door layout every time:
+Run this to see the shuffle and `.map()` produce a fresh door layout each time:
 
 {% capture challenge_iteration %}
 Run the code to see the Fisher-Yates shuffle and .map() from GameLevelDoors.js. Run it multiple times — the door layout changes every time!
@@ -550,7 +549,7 @@ doorSprites.forEach(d =>
    code=code_iteration
 %}
 
-Play the Doors level to see the shuffle running live — the doors appear in a different order every time the page loads:
+Play the Doors level — the door order is different every single time the page loads:
 
 {% capture challenge_iteration_game %}
 Play the Doors Level! The doors are shuffled into a random order every time. Find the correct door to advance to the Forest.
@@ -575,7 +574,7 @@ export { GameControl };
 
 ### Conditionals
 
-**Interaction guard** — used in every NPC's `interact` across all files, checking dialogue state before proceeding:
+**Interaction guard** — every NPC across every level file uses this same pattern to check whether a dialogue box is already open before doing anything:
 
 ```javascript
 // GameLevelForest.js — sprite_data_wraith
@@ -591,7 +590,7 @@ interact: function() {
 }
 ```
 
-**State transition conditional** — `GameLevelMazeSub.js` checks which game control to use before transitioning out of the maze:
+**State transition conditional** — the Exit Warden in `GameLevelMazeSub.js` checks whether it should use a parent controller or the current one before triggering the transition:
 
 ```javascript
 // GameLevelMazeSub.js — Exit Warden
@@ -604,7 +603,7 @@ if (topGame) {
 }
 ```
 
-**Guard conditional** — `NpcAiChat.close()` guards against acting on an already-removed panel:
+**Guard conditional** — `NpcAiChat.close()` does nothing if the panel has already been removed from the page:
 
 ```javascript
 // GameLevelForestWin.js
@@ -617,7 +616,7 @@ close() {
 }
 ```
 
-Run the code below to see the dialogue guard and transition conditional in isolation:
+Run this to see the dialogue guard toggle back and forth across three calls:
 
 {% capture challenge_conditionals %}
 Run the code to see the NPC dialogue guard and state transition conditional from the Escape Game. Watch how the dialogue state changes with each interact call.
@@ -665,7 +664,7 @@ console.log(`\nTransition target: ${topGame.name}`);
 
 ### Nested Conditions
 
-`GameLevelDoors.js` has three levels of nesting — the outer `.map()` checks `isCorrect`, the middle level checks dialogue state, and the deepest level fires the level transition:
+`GameLevelDoors.js` has three levels of nesting stacked inside a single `.map()` call. The outer layer picks the correct vs. wrong door, the middle layer checks dialogue state, and the deepest layer fires the actual level transition:
 
 ```javascript
 // GameLevelDoors.js
@@ -703,7 +702,7 @@ const doorSprites = doorConfigs.map((cfg, i) => {
 });
 ```
 
-Run the code below to see the door picker nested logic produce different results each run:
+Run this to see which door gets picked and what each branch outputs:
 
 {% capture challenge_nested %}
 Run the code to see the nested door conditional logic from GameLevelDoors.js. The correct door changes every run — see which one it picks!
@@ -759,7 +758,7 @@ doorConfigs.forEach((_, i) => interact(i));
 
 ### Numbers
 
-Position coordinates, scale factors, and animation rates are numeric properties used across every level:
+Every level uses numbers for position, scale, animation speed, and pixel dimensions. The octopus player config in `GameLevelForest.js` is a clear example:
 
 ```javascript
 // GameLevelForest.js — numeric properties on sprite_data_octopus
@@ -774,7 +773,7 @@ const sprite_data_octopus = {
 };
 ```
 
-`GameLevelMazeSub.js` computes all barrier positions from numeric multiplication:
+`GameLevelMazeSub.js` calculates all platform positions by multiplying ratios against the canvas dimensions at runtime:
 
 ```javascript
 // GameLevelMazeSub.js
@@ -793,7 +792,7 @@ const step3 = b('step3', 0.41, 0.40, 0.22, 0.03);
 
 ### Strings
 
-Character IDs, sprite paths, greeting text, and state strings are used throughout:
+Character IDs, image paths, dialogue text, and CSS values are all strings:
 
 ```javascript
 // GameLevelForest.js
@@ -804,7 +803,7 @@ const sprite_data_wraith = {
 };
 ```
 
-Template literals appear in `NpcAiChat` for dynamic error messages and CSS:
+`NpcAiChat` in `GameLevelForestWin.js` uses template literals to build error messages and dynamic CSS on the fly:
 
 ```javascript
 // GameLevelForestWin.js
@@ -819,7 +818,7 @@ d.style.animation = `npcDot 1s ease-in-out ${i * 0.18}s infinite`;
 
 ### Booleans
 
-Boolean flags control gravity, dialogue open state, and NPC initialization:
+Boolean values show up in gravity flags, selection states, and open/closed checks:
 
 ```javascript
 // GameLevelForest.js — GRAVITY flag
@@ -841,7 +840,7 @@ isOpen() {
 
 ### Arrays
 
-Arrays store dialogue lines, door configs, position sets, chat history, and class lists:
+Arrays hold dialogue lines, door configurations, position sets, chat history, and level class lists:
 
 ```javascript
 // GameLevelForest.js — dialogues array
@@ -871,7 +870,7 @@ this.history.push({ role: 'assistant', content: reply });
 
 ### Objects (JSON)
 
-Every sprite configuration is a nested Object Literal. The R2D2 config in `GameLevelForestSub.js` is a complete example:
+Every sprite is configured as a nested object literal. The R2D2 sprite in `GameLevelForestSub.js` is one of the more detailed ones:
 
 ```javascript
 // GameLevelForestSub.js
@@ -889,7 +888,7 @@ const sprite_data_right = {
 };
 ```
 
-The NPC AI API call body is also a JSON object:
+The AI API request body is also assembled as a JSON object before being sent:
 
 ```javascript
 // GameLevelForestWin.js
@@ -901,7 +900,7 @@ body: JSON.stringify({
 }),
 ```
 
-Run the code below to see all five data types printed from real sprite config values:
+Run this to see all five data types printed from real sprite config values:
 
 {% capture challenge_datatypes %}
 Run the code to see all five data types — Numbers, Strings, Booleans, Arrays, and Objects — printed from real Escape Game sprite configs.
@@ -986,7 +985,7 @@ console.log(JSON.stringify(sprite_data_r2d2, null, 2));
 
 ### Mathematical
 
-Barrier geometry uses `*` and `Math.round`. The door shuffle uses `*` and `Math.floor`. The typing animation uses `*` for staggered delays. The taunt cycling uses `%`:
+Barrier sizes come from multiplying ratios by canvas dimensions and rounding. Door shuffling uses `Math.floor` and `Math.random`. Typing dot delays use multiplication for staggering. Taunt cycling uses modulo so it wraps around:
 
 ```javascript
 // GameLevelMazeSub.js
@@ -1010,7 +1009,7 @@ this._tauntIndex++;
 
 ### String Operations
 
-Template literals construct dynamic strings for error messages, CSS values, and animation timing:
+Template literals handle error messages, CSS properties, and animation values throughout `GameLevelForestWin.js`. Key lookup uses an object literal as a map with a `||` fallback for unknown names:
 
 ```javascript
 // GameLevelForestWin.js
@@ -1032,7 +1031,7 @@ return {
 
 ### Boolean Expressions
 
-Compound `&&` and `||` expressions control NPC interaction guards and fallback state across all files:
+`&&` and `||` chains guard NPC interactions and handle fallback state. `?.` and `??` keep the AI reply safe when the response structure is unexpected:
 
 ```javascript
 // Every NPC interact — && compound expression
@@ -1054,7 +1053,7 @@ if (!this.isOpen()) return;
 return data.content.find(b => b.type === 'text')?.text ?? '...';
 ```
 
-Run the code below to see all three operator types produce output from real game logic:
+Run this to see all three operator categories produce output from real game logic:
 
 {% capture challenge_operators %}
 Run the code to see mathematical, string, and boolean operators all producing output from real Escape Game logic.
@@ -1118,7 +1117,7 @@ console.log(`?. and ?? reply: "${reply}"`);
    code=code_operators
 %}
 
-Play the full game one more time as a final demo — every operator, data type, and control structure on this page is running live inside:
+Play the full game one last time — every operator, type, and control structure covered above is running inside it:
 
 {% capture challenge_operators_game %}
 Play the full Escape Game as a final demo! Every operator, data type, and control structure covered in this portfolio is running live inside.
@@ -1151,20 +1150,20 @@ export { GameControl };
 
 ### Keyboard Input
 
-The player is controlled entirely through keyboard events. The `keypress` map on every Player sprite data config binds WASD keys to directions — `87` is W (up), `65` is A (left), `83` is S (down), `68` is D (right). The GameEngine reads this map each frame and moves the player accordingly:
+Player movement is entirely keyboard-driven. The `keypress` map in each level's Player sprite config binds key codes to directions — `87` = W (up), `65` = A (left), `83` = S (down), `68` = D (right). The GameEngine reads this map every frame and moves the player accordingly:
 
 ```javascript
 // GameLevelForest.js — keypress map on sprite_data_octopus
 keypress: { up: 87, left: 65, down: 83, right: 68 }
 ```
 
-Every level file defines this same map identically on its Player config. The NPC `interact` is also triggered by a key event (the E key), which the engine routes to whichever NPC the player is overlapping.
+Every level defines this same map on its Player config. NPC interactions are also keyboard-triggered — the E key fires the `interact` function on whatever NPC the player is currently overlapping.
 
 ### Canvas Rendering
 
-All sprites, backgrounds, platforms, and NPCs are drawn to a `<canvas>` element each frame via the GameEngine's `draw()` loop. Each level's `this.classes` array tells the engine what to instantiate; the engine then calls `draw()` on every game object every tick.
+Every sprite, background, platform, and NPC is rendered onto a `<canvas>` element each frame through the GameEngine's `draw()` loop. The engine instantiates everything in `this.classes`, then calls `draw()` on every object every tick.
 
-The `ANIMATION_RATE` and `orientation` properties on each sprite config control which frame of the spritesheet is drawn:
+Each sprite config's `ANIMATION_RATE` and `orientation` properties tell the engine which frame of the spritesheet to draw:
 
 ```javascript
 // GameLevelForestDeath.js — sprite_data_beckoner animation config
@@ -1176,7 +1175,7 @@ down:        { row: 0, start: 0, columns: 1 },
 
 ### GameEnv Configuration
 
-`gameEnv` is passed into every level constructor and gives each level access to the canvas dimensions, the asset path, and the running `GameControl` instance. All sprite positions and barrier sizes are computed from `gameEnv.innerWidth` and `gameEnv.innerHeight` so the game scales to any screen:
+Every level constructor receives `gameEnv`, which gives access to the canvas dimensions, the asset path, and the active `GameControl` instance. All positions and sizes are computed from `gameEnv.innerWidth` and `gameEnv.innerHeight` so the game scales correctly at any resolution:
 
 ```javascript
 // GameLevelMazeSub.js — gameEnv consumed in constructor
@@ -1197,7 +1196,7 @@ constructor(gameEnv) {
 
 ### DOM Output
 
-Every level transition creates a full-screen black `<div>` overlay using the DOM API and animates it with CSS transitions:
+Level transitions inject a full-screen black `<div>` overlay into the page and fade it in and out using CSS transitions:
 
 ```javascript
 // GameLevelMazeSub.js — fade overlay built and injected at transition time
@@ -1225,7 +1224,7 @@ requestAnimationFrame(() => {
 });
 ```
 
-Run the code below to see the fade overlay sequencing in isolation:
+Run this to see the fade sequence logged step by step:
 
 {% capture challenge_dom %}
 Run the code to see the fade overlay transition sequence from GameLevelMazeSub.js simulated with console output.
@@ -1266,7 +1265,7 @@ simulateFadeTransition('GameLevelForestWin');
 
 ### Asynchronous I/O
 
-The game uses `requestAnimationFrame` and nested `setTimeout` calls to sequence all level transitions without blocking the browser. `BeckonerChaseController` in `GameLevelForestDeath.js` uses elapsed real time to ramp up the chase speed gradually:
+Level transitions are sequenced with `requestAnimationFrame` and nested `setTimeout` calls so nothing blocks the browser. `BeckonerChaseController` in `GameLevelForestDeath.js` uses real elapsed time to gradually increase the chase speed:
 
 ```javascript
 // GameLevelForestDeath.js — BeckonerChaseController.update()
@@ -1279,7 +1278,7 @@ update() {
 }
 ```
 
-Run the code below to see the speed ramp logic in isolation:
+Run this to see the speed ramp in isolation:
 
 {% capture challenge_async %}
 Run the code to see the BeckonerChaseController speed ramp from GameLevelForestDeath.js. Watch how the speed increases over time and caps at 2.5!
@@ -1319,7 +1318,7 @@ console.log('\nSpeed ramp over time:');
 
 ### JSON Parsing
 
-Sprite config objects are deeply nested JSON-style object literals throughout every file. The `doorSprites` array in `GameLevelDoors.js` is built by spreading a shared `doorDefaults` object into each individual door config:
+Sprite configs are deeply nested JSON-style object literals throughout the codebase. `GameLevelDoors.js` keeps things clean by defining a shared `doorDefaults` object and spreading it into each individual door config:
 
 ```javascript
 // GameLevelDoors.js — spreading doorDefaults into each door sprite config
@@ -1338,7 +1337,7 @@ const doorSprites = doorConfigs.map((cfg, i) => ({
 }));
 ```
 
-Run the code below to see the spread and `JSON.stringify` in action:
+Run this to see the spread and `JSON.stringify` output for all five doors:
 
 {% capture challenge_json %}
 Run the code to see the object spread and JSON.stringify from GameLevelDoors.js. Each door gets all shared defaults merged with its own config!
@@ -1396,7 +1395,7 @@ doorSprites.forEach(d => {
 
 ### Code Comments
 
-Every level file opens with a description comment and has inline comments throughout explaining the purpose of each block. `GameLevelMazeSub.js` has the most detailed comments — it includes an ASCII diagram of the staircase layout right in the source:
+Every level file opens with a description comment and has inline comments throughout. `GameLevelMazeSub.js` goes the furthest — it includes an ASCII art diagram of the staircase platform layout directly in the source so anyone reading the file can visualize the geometry before looking at the numbers:
 
 ```javascript
 // GameLevelMazeSub.js — ASCII layout comment
@@ -1413,13 +1412,13 @@ Every level file opens with a description comment and has inline comments throug
 
 ### Mini-Lesson Documentation
 
-This portfolio page itself is the mini-lesson document. Each section maps one CS111 objective to exact source code, with a prose explanation of the concept, a direct code excerpt from the relevant level file, a code runner block where the logic runs live in the browser, and a game runner block where the actual level can be played.
+This page is my mini-lesson. Each objective section has a prose explanation of the concept, a direct excerpt from the relevant source file, a code runner where the logic runs live in the browser, and in most cases a full game runner where you can play the level that contains it. The goal was to make every single objective observable, not just readable.
 
 ---
 
 ### Code Highlights
 
-Each section above includes annotated excerpts pulled directly from the source files, with comments pointing to the specific thing being demonstrated. The code runner blocks serve as runnable highlights: they strip the game engine out and run just the logic being discussed, so you can see the exact output without needing to play through the whole game to reach that code path.
+Every section above pulls annotated excerpts straight from the actual source files, with comments pointing at the specific thing being demonstrated. The code runners are designed to strip out the game engine and run only the piece of logic being discussed — so you can see the exact output without having to play all the way through the game to hit that code path.
 
 ---
 
@@ -1427,7 +1426,7 @@ Each section above includes annotated excerpts pulled directly from the source f
 
 ### Console Debugging
 
-Every level constructor starts with a `console.log` confirming initialization. Transition code uses `console.warn` for recoverable failures:
+Every level constructor starts with a `console.log` so I could confirm loading order during development. Transition code uses `console.warn` for failures that shouldn't crash the game:
 
 ```javascript
 // Every level file — initialization confirmation
@@ -1444,7 +1443,7 @@ console.warn('Could not hide parent canvas state', e);
 
 ### Hit Box Visualization
 
-The GameEngine supports toggling hitbox outlines on every game object, which was used during development of `GameLevelMazeSub.js` to verify that the zigzag ledge barriers were positioned correctly. The hitbox percentages on each sprite config were tuned using this tool:
+During `GameLevelMazeSub.js` development, the GameEngine's hitbox overlay was used to verify that all six barrier platforms were positioned and sized correctly. Without it, collisions on the zigzag staircase were inconsistent. Toggling it on let me visually confirm the hitbox boundaries and tune the `widthPercentage` and `heightPercentage` values until they matched the visible sprites:
 
 ```javascript
 // GameLevelMazeSub.js — narrow hitbox tuned via hitbox visualization
@@ -1453,7 +1452,7 @@ hitbox: { widthPercentage: 0.45, heightPercentage: 0.2 }
 
 ### Source-Level Debugging
 
-Browser DevTools source-level debugging was used when the `BeckonerChaseController` in `GameLevelForestDeath.js` wasn't correctly detecting the caught condition. Setting a breakpoint inside `update()` revealed the catch threshold needed to be higher:
+The `BeckonerChaseController` catch detection in `GameLevelForestDeath.js` wasn't working correctly — the player was getting caught too early or not at all. I set a breakpoint inside `update()` and stepped through frame by frame, watching the `dist` variable change in the DevTools scope panel. That's how I found the right threshold value to use:
 
 ```javascript
 // GameLevelForestDeath.js — catch threshold found via step-through debugging
@@ -1467,7 +1466,7 @@ if (dist < 50 && !chaseState.caught) {   // value found by watching dist in DevT
 
 ### Network Debugging
 
-The browser's Network tab was used to verify that sprite images and level assets were loading from the correct paths. Early on, several levels used a mismatched `path` prefix that caused images to 404 silently:
+Early in development, some level assets were silently 404-ing because of a wrong path prefix. I opened the Network tab, filtered by status, and found `GameLevelForestSub.js` returning a 404 while every other script loaded with 200. That pointed me directly to the mismatched import path:
 
 ```javascript
 // GameLevelForest.js — path prefix verified via Network tab
@@ -1480,7 +1479,7 @@ const sprite_data_wraith = {
 
 ### Application Debugging
 
-The browser's Application tab was used to track down a bug where transitioning between nested sublevels was leaving stale canvas elements in the DOM. The fix was the `Array.from(gameContainer.children).forEach(...)` cleanup that now appears in every transition function:
+Transitioning between nested sublevels was leaving old canvas elements in the DOM, which caused visual glitches when new levels loaded on top of them. I found this by opening the Elements panel and watching the DOM during a transition. The fix was the `Array.from(gameContainer.children).forEach(...)` cleanup that now runs in every transition function:
 
 ```javascript
 // GameLevelMazeSub.js — cleanup added after DOM inspection revealed stale canvases
@@ -1494,7 +1493,7 @@ if (gameContainer) {
 
 ### Element Inspection
 
-The browser's Element Inspector was used to fix incorrect import paths. Early in development, several levels were importing from the wrong directory. Inspecting the `<script>` elements that the engine injected into the page and checking their `src` attributes made it possible to see which paths were resolving and which weren't.
+A `TypeError: Failed to fetch dynamically imported module` kept appearing in the console from `GameExecutor.js:338`. The error message included the blob URL that failed, which I cross-referenced against the `<script>` tags the engine had injected. One of them had an outdated import path pointing to a file I had renamed. Fixing the import string resolved it immediately.
 
 ![Chrome DevTools console showing a failed dynamic import error](images/element-inspect.png)
 
@@ -1504,7 +1503,7 @@ The browser's Element Inspector was used to fix incorrect import paths. Early in
 
 ### Gameplay Testing
 
-Every level has a live game runner embed in this portfolio so the level can be played directly on the page. The game runners are still live below — clicking into any of them confirms the level is functional right now:
+Every level has a live game runner embed on this page. I used these during development to test each level in isolation without having to play through from the beginning every time. They're still live — clicking into any of them confirms the level is working right now:
 
 {% capture challenge_testing_game %}
 Play the full Escape Game for final verification! All levels, NPCs, transitions, and AI chat are live and testable right here.
@@ -1533,7 +1532,7 @@ export { GameControl };
 
 ### Integration Testing
 
-The most complex integration point is the nested `GameControl` chain: `GameLevelMaze` → `GameLevelMazeSub` (sublevel) → `GameLevelDoors` (via `parentControl`). This was tested by playing all the way through and confirming that the parent `GameControl` correctly pauses when the sublevel launches, and `topGame.transitionToLevel()` correctly transitions to `GameLevelDoors`:
+The trickiest integration to verify was the nested `GameControl` chain: `GameLevelMaze` → `GameLevelMazeSub` (sublevel) → `GameLevelDoors` (via `parentControl`). I tested this by playing all the way through and checking that the parent game correctly paused when the sublevel launched, and that `topGame.transitionToLevel()` handed control back to the right level:
 
 ```javascript
 // GameLevelMazeSub.js — parentControl chain tested end-to-end
@@ -1548,7 +1547,7 @@ if (topGame) {
 
 ### Error Handling
 
-Every level transition wraps the optional `hideCanvasState()` call in a `try/catch` with a `console.warn`. `BeckonerChaseController` guards every property access with optional chaining to avoid crashing if game objects haven't finished initializing:
+Every transition wraps the optional `hideCanvasState()` call in a `try/catch` with a `console.warn` so a missing method doesn't crash the level. `BeckonerChaseController` uses optional chaining on every game object lookup to stay safe during the frames before objects finish loading:
 
 ```javascript
 // GameLevelForest.js — try/catch around optional engine method
@@ -1566,7 +1565,7 @@ const beckoner = this.gameEnv.gameObjects?.find(o => o?.spriteData?.id === 'Stra
 if (!player || !beckoner) return;   // bail out safely if objects not ready yet
 ```
 
-Run the code below to see both patterns in isolation:
+Run this to see both patterns tested against three different scenarios:
 
 {% capture challenge_error %}
 Run the code to see the try/catch and optional chaining error-handling patterns from the Escape Game tested against three different scenarios.
