@@ -7,7 +7,7 @@ permalink: /college-ready-portfolio
 
 # Final Portfolio
 
-This is my final portfolio ik its long ;)
+This is my final portfolio ik its long 
 
 ## CS111 Portfolio Checklist
 | Done | Objective | Evidence |
@@ -64,9 +64,7 @@ This is my final portfolio ik its long ;)
 
 ---
 
-## Object-Oriented
-
-### The Writing Classes
+## The Writing Classes
 
 Escape the Tower has **six custom level classes**, all built on top of the GameEngine base classes. An example of this is `GameLevelForestDeath` (extends the engine's level pattern with `Player` and `Npc`).
 
