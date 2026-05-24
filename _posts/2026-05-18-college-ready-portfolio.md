@@ -11,44 +11,53 @@ This is my final portfolio ik its long
 
 ## CS111 Portfolio Checklist
 
-| Done | Category | Objective | Evidence |
-|------|----------|-----------|----------|
-| ☑ | OOP | Writing Classes | `GameLevelForestDeath`, `NpcAiChat`, and 5 other level classes |
-| ☑ | OOP | Methods & Parameters | `cleanAndTransition(targetLevelClass, primaryGame)`, `_bubble(text, who)`, `launchSublevel(levelClass)` |
-| ☑ | OOP | Instantiation & Objects | `this.classes` arrays in every level; 12 objects in `GameLevelMazeSub` |
-| ☑ | OOP | Inheritance (Basic) | `GameObject → Character → Player / Npc`, plus `Barrier`, `Coin`, `GameEnvBackground` |
-| ☑ | OOP | Method Overriding | `interact` and `reaction` overridden on every NPC sprite config |
-| ☑ | OOP | Constructor Chaining | `new NpcAiChat(...)` x3 in `GameLevelForestWin`; `new GameControl(..., { parentControl })` |
-| ☑ | Control Structures | Iteration | Fisher-Yates `for` loop, `forEach` on container children, `.map()` for door sprites, `for` loop for typing dots |
-| ☑ | Control Structures | Conditionals | NPC interaction guard (`if dialogueSystem && isDialogueOpen`), Exit Warden transition, `NpcAiChat.close()` guard |
-| ☑ | Control Structures | Nested Conditions | 3-level nesting in `GameLevelDoors.js`; empty-input → `try/catch` → reply/error in `NpcAiChat.send()` |
-| ☑ | Data Types | Numbers | `SCALE_FACTOR`, `STEP_FACTOR`, `ANIMATION_RATE`, pixel dimensions, `Math.round(rx * width)` |
-| ☑ | Data Types | Strings | `id: 'The Wraith'`, sprite `src` paths, template literals for CSS and error messages |
-| ☑ | Data Types | Booleans | `GRAVITY: false/true`, `isCorrect`, `isOpen()` returning `!!this.container && ...` |
-| ☑ | Data Types | Arrays | `dialogues[]`, `doorConfigs[]`, `xPositions[]`, `this.history[]`, `this.classes[]` |
-| ☑ | Data Types | Objects (JSON) | Full sprite config objects (`sprite_data_r2d2`), API request body via `JSON.stringify(...)` |
-| ☑ | Operators | Mathematical | `Math.round(rx * width)`, `Math.floor(Math.random() * n)`, `% taunts.length`, `_tauntIndex++` |
-| ☑ | Operators | String Operations | Template literals for CSS (`justify-content:${...}`), error strings (`API ${res.status}`), key lookup with `\|\|` fallback |
-| ☑ | Operators | Boolean Expressions | `&&` interaction guard, `\|\|` fallback for `parentControl`, `!` negation, `?.` and `??` in API reply |
-| ☑ | Input / Output | Keyboard Input | Player controlled via engine key event listeners (arrow keys / WASD) |
-| ☑ | Input / Output | Canvas Rendering | `draw()` via GameEngine; sprites, backgrounds, platforms rendered each level |
-| ☑ | Input / Output | GameEnv Configuration | `gameEnv` passed into every level constructor; `GameControl` and level arrays configured in each file |
-| ☑ | Input / Output | API Integration | `fetch` POST to AI NPC API in `NpcAiChat._ask()` with model and messages |
-| ☑ | Input / Output | Asynchronous I/O | `async _ask()` method; `await fetch(...)` in `NpcAiChat` |
-| ☑ | Input / Output | JSON Parsing | `JSON.stringify(...)` for API body; `data.content.find(b => b.type === 'text')?.text ?? '...'` |
-| ☑ | Documentation | Code Comments | Inline comments throughout all level files explaining logic |
-| ☑ | Documentation | Mini-Lesson Documentation | Portfolio page with embedded live game runners |
-| ☑ | Documentation | Code Highlights | Annotated code snippets with explanations for every objective |
-| ☑ | Debugging | Console Debugging | `console.log("Initializing GameLevelForestDeath...")`, `console.error('NPC AI error:', e)`, `console.log` in all code runners |
-| ☑ | Debugging | Hit Box Visualization | Tuned widthPercentage and heightPercentage on all sprite hitboxes in GameLevelMazeSub.js by toggling the GameEngine's hitbox overlay |
-| ☑ | Debugging | Source-Level Debugging | Set a breakpoint on line 54 of GameLevelForestDeath.js to step through `if (dist < 50 && !chaseState.caught)` and find the correct catch threshold |
-| ☑ | Debugging | Network Debugging | Used the Network tab to find GameLevelForestSub.js returning a 404 while all other scripts loaded 200 — traced to a mismatched import path |
-| ☑ | Debugging | Application Debugging | Inspected the DOM to find stale canvas elements left behind after sublevel transitions; fixed with `Array.from(gameContainer.children).forEach(...)` cleanup |
-| ☑ | Debugging | Element Inspection | Console showed `TypeError: Failed to fetch dynamically imported module` from GameExecutor.js:338; traced the blob import failure back to a renamed file with an outdated import string |
-| ☑ | Testing | Gameplay Testing | Live game runner embeds for every level in the portfolio |
-| ☑ | Testing | Integration Testing | Live NPC AI chat in `GameLevelForestWin` |
-| ☑ | Testing | API Error Handling | `try/catch` in `NpcAiChat.send()`; `console.error('NPC AI error:', e)` |
----
+<table>
+  <thead>
+    <tr>
+      <th>Done</th>
+      <th>Category</th>
+      <th>Objective</th>
+      <th>Evidence</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>☑</td><td>OOP</td><td>Writing Classes</td><td><code>GameLevelForestDeath</code>, <code>NpcAiChat</code>, and 5 other level classes</td></tr>
+    <tr><td>☑</td><td>OOP</td><td>Methods & Parameters</td><td><code>cleanAndTransition(targetLevelClass, primaryGame)</code>, <code>_bubble(text, who)</code>, <code>launchSublevel(levelClass)</code></td></tr>
+    <tr><td>☑</td><td>OOP</td><td>Instantiation & Objects</td><td><code>this.classes</code> arrays in every level; 12 objects in <code>GameLevelMazeSub</code></td></tr>
+    <tr><td>☑</td><td>OOP</td><td>Inheritance (Basic)</td><td><code>GameObject → Character → Player / Npc</code>, plus <code>Barrier</code>, <code>Coin</code>, <code>GameEnvBackground</code></td></tr>
+    <tr><td>☑</td><td>OOP</td><td>Method Overriding</td><td><code>interact</code> and <code>reaction</code> overridden on every NPC sprite config</td></tr>
+    <tr><td>☑</td><td>OOP</td><td>Constructor Chaining</td><td><code>new NpcAiChat(...)</code> x3 in <code>GameLevelForestWin</code>; <code>new GameControl(..., { parentControl })</code></td></tr>
+    <tr><td>☑</td><td>Control Structures</td><td>Iteration</td><td>Fisher-Yates <code>for</code> loop, <code>forEach</code> on container children, <code>.map()</code> for door sprites, <code>for</code> loop for typing dots</td></tr>
+    <tr><td>☑</td><td>Control Structures</td><td>Conditionals</td><td>NPC interaction guard (<code>if dialogueSystem && isDialogueOpen</code>), Exit Warden transition, <code>NpcAiChat.close()</code> guard</td></tr>
+    <tr><td>☑</td><td>Control Structures</td><td>Nested Conditions</td><td>3-level nesting in <code>GameLevelDoors.js</code>; empty-input → <code>try/catch</code> → reply/error in <code>NpcAiChat.send()</code></td></tr>
+    <tr><td>☑</td><td>Data Types</td><td>Numbers</td><td><code>SCALE_FACTOR</code>, <code>STEP_FACTOR</code>, <code>ANIMATION_RATE</code>, pixel dimensions, <code>Math.round(rx * width)</code></td></tr>
+    <tr><td>☑</td><td>Data Types</td><td>Strings</td><td><code>id: 'The Wraith'</code>, sprite <code>src</code> paths, template literals for CSS and error messages</td></tr>
+    <tr><td>☑</td><td>Data Types</td><td>Booleans</td><td><code>GRAVITY: false/true</code>, <code>isCorrect</code>, <code>isOpen()</code> returning <code>!!this.container && ...</code></td></tr>
+    <tr><td>☑</td><td>Data Types</td><td>Arrays</td><td><code>dialogues[]</code>, <code>doorConfigs[]</code>, <code>xPositions[]</code>, <code>this.history[]</code>, <code>this.classes[]</code></td></tr>
+    <tr><td>☑</td><td>Data Types</td><td>Objects (JSON)</td><td>Full sprite config objects (<code>sprite_data_r2d2</code>), API request body via <code>JSON.stringify(...)</code></td></tr>
+    <tr><td>☑</td><td>Operators</td><td>Mathematical</td><td><code>Math.round(rx * width)</code>, <code>Math.floor(Math.random() * n)</code>, <code>% taunts.length</code>, <code>_tauntIndex++</code></td></tr>
+    <tr><td>☑</td><td>Operators</td><td>String Operations</td><td>Template literals for CSS (<code>justify-content:${...}</code>), error strings (<code>API ${res.status}</code>), key lookup with <code>||</code> fallback</td></tr>
+    <tr><td>☑</td><td>Operators</td><td>Boolean Expressions</td><td><code>&&</code> interaction guard, <code>||</code> fallback for <code>parentControl</code>, <code>!</code> negation, <code>?.</code> and <code>??</code> in API reply</td></tr>
+    <tr><td>☑</td><td>Input / Output</td><td>Keyboard Input</td><td>Player controlled via engine key event listeners (arrow keys / WASD)</td></tr>
+    <tr><td>☑</td><td>Input / Output</td><td>Canvas Rendering</td><td><code>draw()</code> via GameEngine; sprites, backgrounds, platforms rendered each level</td></tr>
+    <tr><td>☑</td><td>Input / Output</td><td>GameEnv Configuration</td><td><code>gameEnv</code> passed into every level constructor; <code>GameControl</code> and level arrays configured in each file</td></tr>
+    <tr><td>☑</td><td>Input / Output</td><td>API Integration</td><td><code>fetch</code> POST to AI NPC API in <code>NpcAiChat._ask()</code> with model and messages</td></tr>
+    <tr><td>☑</td><td>Input / Output</td><td>Asynchronous I/O</td><td><code>async _ask()</code> method; <code>await fetch(...)</code> in <code>NpcAiChat</code></td></tr>
+    <tr><td>☑</td><td>Input / Output</td><td>JSON Parsing</td><td><code>JSON.stringify(...)</code> for API body; <code>data.content.find(b => b.type === 'text')?.text ?? '...'</code></td></tr>
+    <tr><td>☑</td><td>Documentation</td><td>Code Comments</td><td>Inline comments throughout all level files explaining logic</td></tr>
+    <tr><td>☑</td><td>Documentation</td><td>Mini-Lesson Documentation</td><td>Portfolio page with embedded live game runners</td></tr>
+    <tr><td>☑</td><td>Documentation</td><td>Code Highlights</td><td>Annotated code snippets with explanations for every objective</td></tr>
+    <tr><td>☑</td><td>Debugging</td><td>Console Debugging</td><td><code>console.log("Initializing GameLevelForestDeath...")</code>, <code>console.error('NPC AI error:', e)</code></td></tr>
+    <tr><td>☑</td><td>Debugging</td><td>Hit Box Visualization</td><td>Tuned <code>widthPercentage</code> and <code>heightPercentage</code> on all sprite hitboxes in GameLevelMazeSub.js by toggling the GameEngine's hitbox overlay</td></tr>
+    <tr><td>☑</td><td>Debugging</td><td>Source-Level Debugging</td><td>Set a breakpoint on line 54 of GameLevelForestDeath.js to step through <code>if (dist &lt; 50 &amp;&amp; !chaseState.caught)</code> and find the correct catch threshold</td></tr>
+    <tr><td>☑</td><td>Debugging</td><td>Network Debugging</td><td>Used the Network tab to find GameLevelForestSub.js returning a 404 while all other scripts loaded 200 — traced to a mismatched import path</td></tr>
+    <tr><td>☑</td><td>Debugging</td><td>Application Debugging</td><td>Inspected the DOM to find stale canvas elements left behind after sublevel transitions; fixed with <code>Array.from(gameContainer.children).forEach(...)</code> cleanup</td></tr>
+    <tr><td>☑</td><td>Debugging</td><td>Element Inspection</td><td>Console showed <code>TypeError: Failed to fetch dynamically imported module</code> from GameExecutor.js:338; traced to a renamed file with an outdated import string</td></tr>
+    <tr><td>☑</td><td>Testing</td><td>Gameplay Testing</td><td>Live game runner embeds for every level in the portfolio</td></tr>
+    <tr><td>☑</td><td>Testing</td><td>Integration Testing</td><td>Live NPC AI chat in <code>GameLevelForestWin</code></td></tr>
+    <tr><td>☑</td><td>Testing</td><td>API Error Handling</td><td><code>try/catch</code> in <code>NpcAiChat.send()</code>; <code>console.error('NPC AI error:', e)</code></td></tr>
+  </tbody>
+</table>
 
 ## Writing Classes
 
